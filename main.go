@@ -18,10 +18,10 @@ var config = flag.String("config", "config.yaml", "path to config file")
 var output = flag.String("output", "output.png", "path to output image")
 
 func main() {
-	flag.Parse()
-
 	// Load words
-	pathToFile := "result.json"
+	var pathToFile string
+	flag.StringVar(&pathToFile, "path", "", "path to input file")
+	flag.Parse()
 	result := MakeMap(pathToFile)
 
 	// Load config
