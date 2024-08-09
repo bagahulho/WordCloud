@@ -2,10 +2,12 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
+	"strings"
 )
 
-type jsonChat struct {
+type JsonChat struct {
 	Name     string    `json:"name"`
 	ID       int64     `json:"id"`
 	Messages []Message `json:"messages"`
@@ -25,27 +27,28 @@ type TextEntity struct {
 	Text string `json:"text"`
 }
 
-func MakeMap(pathToFile string) map[string]int {
+func MakeMap(pathToFile string) (map[string]int, error) {
 	fileData, err := os.ReadFile(pathToFile)
 	if err != nil {
-		panic(err)
+		return nil, fmt.Errorf("error reading file: %w", err)
 	}
-	data := jsonChat{}
+	data := JsonChat{}
 	err = json.Unmarshal(fileData, &data)
 	if err != nil {
-		panic(err)
+		return nil, fmt.Errorf("error unmarshalling file: %w", err)
 	}
 	result := make(map[string]int)
 	for _, message := range data.Messages {
-		if len(message.TextEntities) > 0 && message.TextEntities[0].Type != "link" {
-			words := ExtractWords(message.TextEntities[0].Text)
-			for _, word := range words {
-				if len([]rune(word)) > 4 {
-					//word = strings.ToLower(word)
-					result[word] += 1
-				}
+		if len(message.TextEntities) == 0 || message.TextEntities[0].Type != "plain" {
+			continue
+		}
+		words := ExtractWords(message.TextEntities[0].Text)
+		for _, word := range words {
+			if len([]rune(word)) > 4 {
+				word = strings.ToLower(word)
+				result[word] += 1
 			}
 		}
 	}
-	return result
+	return result, nil
 }

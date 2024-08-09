@@ -6,6 +6,7 @@ import (
 	"gopkg.in/yaml.v2"
 	"image/color"
 	"image/png"
+	"log"
 	_ "net/http/pprof"
 	"os"
 	"path/filepath"
@@ -22,7 +23,10 @@ func main() {
 	var pathToFile string
 	flag.StringVar(&pathToFile, "path", "", "path to input file")
 	flag.Parse()
-	result := MakeMap(pathToFile)
+	result, err := MakeMap(pathToFile)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// Load config
 	var conf Conf
