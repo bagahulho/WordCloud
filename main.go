@@ -12,15 +12,17 @@ import (
 	"github.com/psykhi/wordclouds"
 )
 
-var config = flag.String("config", "config.yaml", "path to config file")
+// var config = flag.String("config", "config.yaml", "path to config file")
 var output = flag.String("output", "output.png", "path to output image")
 
 func main() {
 	// Load words
-	var pathToFile string
-	flag.StringVar(&pathToFile, "path", "", "path to input file")
+	var pathToJson string
+	var pathToMask string
+	flag.StringVar(&pathToJson, "json", "", "path to json file")
+	flag.StringVar(&pathToMask, "mask", "", "path to mask image")
 	flag.Parse()
-	result, err := MakeMap(pathToFile)
+	result, err := MakeMap(pathToJson)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -28,7 +30,7 @@ func main() {
 	// Load config
 
 	start := time.Now()
-	optionsArr := loadConfig(*config)
+	optionsArr := loadConfig(pathToMask)
 
 	w := wordclouds.NewWordcloud(result,
 		optionsArr...,

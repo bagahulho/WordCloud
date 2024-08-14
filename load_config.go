@@ -2,25 +2,54 @@ package main
 
 import (
 	"fmt"
+	"github.com/flopp/go-findfont"
 	"github.com/psykhi/wordclouds"
 	"gopkg.in/yaml.v2"
 	"image/color"
-	"os"
-	"path/filepath"
 )
 
+var conf = Conf{
+	FontMaxSize:     300,
+	FontMinSize:     30,
+	RandomPlacement: false,
+	Colors: []color.RGBA{
+		{R: 247, G: 144, B: 30, A: 255},
+		{R: 194, G: 69, B: 39, A: 255},
+		{R: 38, G: 103, B: 118, A: 255},
+		{R: 173, G: 210, B: 224, A: 255},
+	},
+	BackgroundColor: color.RGBA{R: 250, G: 250, B: 250, A: 255},
+	Width:           2048,
+	Height:          2048,
+	Mask: MaskConf{"", color.RGBA{
+		R: 0,
+		G: 0,
+		B: 0,
+		A: 0,
+	}},
+	Debug: false,
+}
+
 func loadConfig(pathToFile string) []wordclouds.Option {
-	var conf Conf
-	content, err := os.ReadFile(pathToFile)
-	if err == nil {
-		err = yaml.Unmarshal(content, &conf)
-		if err != nil {
-			fmt.Printf("Failed to decode config, using defaults instead: %s\n", err)
-		}
-	} else {
-		fmt.Println("No config file. Using defaults")
+	//var conf Conf
+	//content, err := os.ReadFile(pathToFile)
+	//if err == nil {
+	//	err = yaml.Unmarshal(content, &conf)
+	//	if err != nil {
+	//		fmt.Printf("Failed to decode config, using defaults instead: %s\n", err)
+	//	}
+	//} else {
+	//	fmt.Println("No config file. Using defaults")
+	//}
+	//os.Chdir(filepath.Dir(*config))
+
+	fontPath, errFont := findfont.Find("arial.ttf")
+	if errFont != nil {
+		panic(errFont)
 	}
-	os.Chdir(filepath.Dir(*config))
+
+	conf.FontFile = fontPath
+	conf.Mask.File = pathToFile
 
 	if conf.Debug {
 		confYaml, _ := yaml.Marshal(conf)
