@@ -31,18 +31,6 @@ var conf = Conf{
 }
 
 func loadConfig(pathToFile string) []wordclouds.Option {
-	//var conf Conf
-	//content, err := os.ReadFile(pathToFile)
-	//if err == nil {
-	//	err = yaml.Unmarshal(content, &conf)
-	//	if err != nil {
-	//		fmt.Printf("Failed to decode config, using defaults instead: %s\n", err)
-	//	}
-	//} else {
-	//	fmt.Println("No config file. Using defaults")
-	//}
-	//os.Chdir(filepath.Dir(*config))
-
 	fontPath, errFont := findfont.Find("arial.ttf")
 	if errFont != nil {
 		panic(errFont)

@@ -10,9 +10,9 @@ import (
 	"time"
 
 	"github.com/psykhi/wordclouds"
+	_ "github.com/urfave/cli/v2"
 )
 
-// var config = flag.String("config", "config.yaml", "path to config file")
 var output = flag.String("output", "output.png", "path to output image")
 
 func main() {
