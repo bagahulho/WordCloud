@@ -19,8 +19,6 @@ var conf = Conf{
 		{R: 173, G: 210, B: 224, A: 255},
 	},
 	BackgroundColor: color.RGBA{R: 250, G: 250, B: 250, A: 255},
-	Width:           2048,
-	Height:          2048,
 	Mask: MaskConf{"", color.RGBA{
 		R: 0,
 		G: 0,
@@ -30,7 +28,7 @@ var conf = Conf{
 	Debug: false,
 }
 
-func loadConfig(pathToFile string) []wordclouds.Option {
+func loadConfig(pathToFile string, width, height int) []wordclouds.Option {
 	fontPath, errFont := findfont.Find("arial.ttf")
 	if errFont != nil {
 		panic(errFont)
@@ -38,6 +36,8 @@ func loadConfig(pathToFile string) []wordclouds.Option {
 
 	conf.FontFile = fontPath
 	conf.Mask.File = pathToFile
+	conf.Width = width
+	conf.Height = height
 
 	if conf.Debug {
 		confYaml, _ := yaml.Marshal(conf)
