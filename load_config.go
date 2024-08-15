@@ -55,7 +55,7 @@ func loadConfig(pathToFile string, width, height int) ([]wordclouds.Option, erro
 
 	var boxes []*wordclouds.Box
 	if conf.Mask.File != "" {
-		boxes = wordclouds.Mask(
+		boxes = myMask(
 			conf.Mask.File,
 			conf.Width,
 			conf.Height,

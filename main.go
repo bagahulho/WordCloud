@@ -2,13 +2,12 @@ package main
 
 import (
 	"fmt"
+	"github.com/psykhi/wordclouds"
 	"github.com/urfave/cli/v2"
 	"image/png"
 	"log"
 	"os"
 	"time"
-
-	"github.com/psykhi/wordclouds"
 )
 
 var (
@@ -46,7 +45,7 @@ func main() {
 					Name:        "mask",
 					Aliases:     []string{"m"},
 					Usage:       "Path to mask image (png) (picture without background)",
-					Required:    true,
+					Value:       "default",
 				},
 				&cli.StringFlag{
 					Destination: &outputPath,
