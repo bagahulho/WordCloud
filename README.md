@@ -32,3 +32,12 @@ Hello. This repository will allow you to make a beautiful picture of the words f
    and `/path/to/your/mask.png` with the path to the PNG image you want to use as the mask shape for your word cloud.
    Use `makeSingle` (mS) if you exported one chat, and `makeMulti` (mM) if you exported all chats. 
 You can also specify the size of the resulting image using the `--width` and `--height` flags (the larger the size you choose, the more words will fit).
+
+### Example
+- mask:
+
+![mask image](https://github.com/bagahulho/WordCloud/blob/make-cli/example/mask.png)
+
+- result:
+
+![result image](https://github.com/bagahulho/WordCloud/blob/make-cli/example/output.png)
