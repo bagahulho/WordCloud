@@ -5,7 +5,6 @@ import (
 	"github.com/urfave/cli/v2"
 	"image/png"
 	"log"
-	_ "net/http/pprof"
 	"os"
 	"time"
 
@@ -149,7 +148,10 @@ func makeWordCloud(makeMap func(pathToJson string) (map[string]int, error)) erro
 
 func draw(words map[string]int, pathToMask, outputPath string, width, height int) {
 	start := time.Now()
-	optionsArr := loadConfig(pathToMask, width, height)
+	optionsArr, err := loadConfig(pathToMask, width, height)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	w := wordclouds.NewWordcloud(words,
 		optionsArr...,

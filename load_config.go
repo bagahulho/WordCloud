@@ -28,10 +28,19 @@ var conf = Conf{
 	Debug: false,
 }
 
-func loadConfig(pathToFile string, width, height int) []wordclouds.Option {
-	fontPath, errFont := findfont.Find("arial.ttf")
+func loadConfig(pathToFile string, width, height int) ([]wordclouds.Option, error) {
+	var fontPath string
+	var errFont error
+	fonts := []string{"arial.ttf", "Ubuntu-M.ttf", "FreeMono.ttf"}
+
+	for _, font := range fonts {
+		fontPath, errFont = findfont.Find(font)
+		if errFont == nil {
+			break
+		}
+	}
 	if errFont != nil {
-		panic(errFont)
+		return nil, fmt.Errorf("font not found in your system")
 	}
 
 	conf.FontFile = fontPath
@@ -75,5 +84,5 @@ func loadConfig(pathToFile string, width, height int) []wordclouds.Option {
 		optionsArr = append(optionsArr, wordclouds.Debug())
 	}
 
-	return optionsArr
+	return optionsArr, nil
 }
