@@ -12,6 +12,7 @@ func MakeMapSingle(pathToFile string) (map[string]int, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error reading file: %w", err)
 	}
+
 	data := SingleChat{}
 	err = json.Unmarshal(fileData, &data)
 	if err != nil {
