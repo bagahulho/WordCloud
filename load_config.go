@@ -19,8 +19,6 @@ var conf = Conf{
 		{R: 173, G: 210, B: 224, A: 255},
 	},
 	BackgroundColor: color.RGBA{R: 250, G: 250, B: 250, A: 255},
-	Width:           2048,
-	Height:          2048,
 	Mask: MaskConf{"", color.RGBA{
 		R: 0,
 		G: 0,
@@ -30,14 +28,25 @@ var conf = Conf{
 	Debug: false,
 }
 
-func loadConfig(pathToFile string) []wordclouds.Option {
-	fontPath, errFont := findfont.Find("arial.ttf")
+func loadConfig(pathToFile string, width, height int) ([]wordclouds.Option, error) {
+	var fontPath string
+	var errFont error
+	fonts := []string{"arial.ttf", "Ubuntu-M.ttf", "FreeMono.ttf"}
+
+	for _, font := range fonts {
+		fontPath, errFont = findfont.Find(font)
+		if errFont == nil {
+			break
+		}
+	}
 	if errFont != nil {
-		panic(errFont)
+		return nil, fmt.Errorf("font not found in your system")
 	}
 
 	conf.FontFile = fontPath
 	conf.Mask.File = pathToFile
+	conf.Width = width
+	conf.Height = height
 
 	if conf.Debug {
 		confYaml, _ := yaml.Marshal(conf)
@@ -46,7 +55,7 @@ func loadConfig(pathToFile string) []wordclouds.Option {
 
 	var boxes []*wordclouds.Box
 	if conf.Mask.File != "" {
-		boxes = wordclouds.Mask(
+		boxes = myMask(
 			conf.Mask.File,
 			conf.Width,
 			conf.Height,
@@ -75,5 +84,5 @@ func loadConfig(pathToFile string) []wordclouds.Option {
 		optionsArr = append(optionsArr, wordclouds.Debug())
 	}
 
-	return optionsArr
+	return optionsArr, nil
 }

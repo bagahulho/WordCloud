@@ -20,3 +20,31 @@ type MaskConf struct {
 	File  string
 	Color color.RGBA
 }
+
+type SingleChat struct {
+	Messages []struct {
+		Type         string `json:"type"`
+		TextEntities []struct {
+			Type string `json:"type"`
+			Text string `json:"text"`
+		} `json:"text_entities"`
+	} `json:"messages"`
+}
+
+type MultiChat struct {
+	Chats struct {
+		List []struct {
+			Type     string `json:"type"`
+			ID       int64  `json:"id"`
+			Name     string `json:"name,omitempty"`
+			Messages []struct {
+				ID           int    `json:"id"`
+				Type         string `json:"type"`
+				TextEntities []struct {
+					Type string `json:"type"`
+					Text string `json:"text"`
+				} `json:"text_entities"`
+			} `json:"messages"`
+		} `json:"list"`
+	} `json:"chats"`
+}
